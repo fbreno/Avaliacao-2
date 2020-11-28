@@ -5,35 +5,10 @@
 template <typename T>
 class LinkedList
 {
-private:
-    struct Node
-    {
-        T value;
-        Node *prev;
-        Node *next;
-    };
-    void clone(const LinkedList &outro)
-    {
-        if (outro.nodeCount == 0)
-        {
-            return;
-        }
-        else
-        {
-            Node *current = outro.frist;
-            while (current != nullptr)
-            {
-                insert(current->value);
-                current = current->next;
-            }
-        }
-    }
-    Node *frist = nullptr;
-    Node *last = nullptr;
-    size_t nodeCount = 0;
-
 public:
-    LinkedList();
+    LinkedList()
+    {
+    }
     ~LinkedList()
     {
         clear();
@@ -57,22 +32,29 @@ public:
 
     void insert(T value)
     {
-        if (frist != nullptr)
+        if (first != nullptr)
         {
-            Node *last = frist;
-            while (last->next != nullptr)
+            Node *current = first;
+
+            while (current->next != nullptr)
             {
-                last = last->next;
+                current = current->next;
             }
-            Node *outro = new Node();
-            outro->value = value;
-            last->next = outro;
+
+            Node *other = new Node();
+            other->value = value;
+            current->next = other;
+            other->prev = current;
+            last = other;
+
             ++nodeCount;
         }
         else
         {
             first = new Node();
             first->value = value;
+            first->prev = nullptr;
+            first->next = last;
             ++nodeCount;
         }
     }
@@ -129,14 +111,14 @@ public:
 
     void clear()
     {
-        if (nodecount == 0)
+        if (nodeCount == 0)
         {
             return;
         }
 
-        Node *current = frist;
+        Node *current = first;
 
-        while (curret != nullptr)
+        while (current != nullptr)
         {
             Node *temp = current->next;
             delete current;
@@ -144,14 +126,14 @@ public:
         }
 
         nodeCount = 0;
-        frist = nullptr;
+        first = nullptr;
     }
 
     void removeAt(size_t index)
     {
         if (index >= nodeCount)
         {
-            //erro
+            std::cout << "Posição digitada inválida" << std::endl;
         }
 
         Node *current = first;
@@ -168,13 +150,14 @@ public:
         tempPrev->next = current->next;
         tmpNext->prev = current->prev;
         delete current;
+        nodeCount--;
     }
 
     void insertAt(T value, size_t position)
     {
         if (position >= nodeCount)
         {
-            //erro
+            std::cout << "Posição digitada inválida" << std::endl;
         }
 
         Node *current = first;
@@ -197,31 +180,119 @@ public:
 
     void insertAtFront(T value)
     {
-        Node *temp = frist;
-        frist->value = value;
-        frist->next = temp;
-        temp->prev = frist;
+        if (first != nullptr)
+        {
+            if (nodeCount == 1)
+            {
+                Node *current = first;
+                Node *other = new Node();
+                other->value = value;
+                current->next = other;
+                other->prev = current;
+                last = other;
+
+                ++nodeCount;
+            }
+            else
+            {
+                Node *current = last;
+                Node *other = new Node();
+                other->value = value;
+                current->next = other;
+                other->prev = current;
+                last = other;
+
+                ++nodeCount;
+            }
+        }
+        else
+        {
+            first = new Node();
+            first->value = value;
+            first->prev = last;
+            ++nodeCount;
+        }
     }
+
+    size_t getNodeCount() { return nodeCount; }
 
     void insertAtBack(T value)
     {
-        Node *temp = last;
-        last->value = value;
-        temp->next = last;
-        last->prev = temp;
+        if (first != nullptr)
+        {
+            if (nodeCount == 1)
+            {
+                Node *current = first;
+                Node *other = new Node();
+                other->value = value;
+                current->next = other;
+                other->prev = current;
+                last = other;
+
+                ++nodeCount;
+            }
+            else
+            {
+                Node *current = last;
+                Node *other = new Node();
+                other->value = value;
+                current->next = other;
+                other->prev = current;
+                last = other;
+
+                ++nodeCount;
+            }
+        }
+        else
+        {
+            first = new Node();
+            first->value = value;
+            first->prev = last;
+            ++nodeCount;
+        }
     }
 
     void removeAtFront()
     {
-        frist = frist->next;
-        frist->prev = nullptr;
+        first = first->next;
+        first->prev = nullptr;
+        nodeCount--;
     }
 
     void removeAtBack()
     {
         last = last->prev;
         last->next = nullptr;
+        nodeCount--;
     }
 
     size_t size() { return nodeCount; }
+
+private:
+    struct Node
+    {
+        T value;
+        Node *prev;
+        Node *next;
+    };
+    void clone(const LinkedList &outro)
+    {
+        if (outro.nodeCount == 0)
+        {
+            return;
+        }
+        else
+        {
+            Node *current = outro.first;
+            while (current != nullptr)
+            {
+                insert(current->value);
+                current = current->next;
+            }
+        }
+    }
+
+    Node *first = nullptr;
+    Node *last = nullptr;
+    size_t nodeCount = 0;
 };
