@@ -34,12 +34,7 @@ public:
     {
         if (first != nullptr)
         {
-            Node *current = first;
-
-            while (current->next != nullptr)
-            {
-                current = current->next;
-            }
+            Node *current = last;
 
             Node *other = new Node();
             other->value = value;
@@ -54,7 +49,7 @@ public:
             first = new Node();
             first->value = value;
             first->prev = nullptr;
-            first->next = last;
+            last = first;
             ++nodeCount;
         }
     }
@@ -107,6 +102,7 @@ public:
                 return index;
             }
         }
+        return 0;
     }
 
     void clear()
@@ -158,13 +154,14 @@ public:
         if (position >= nodeCount)
         {
             std::cout << "Posição digitada inválida" << std::endl;
+            return;
         }
 
         Node *current = first;
-        Node *temp = nullptr;
+        Node *temp = new Node();
         size_t currentIndex = 0;
 
-        while (currentIndex < position)
+        while (currentIndex < position-1)
         {
             temp = current;
             current = current->next;
@@ -173,8 +170,11 @@ public:
 
         Node *outro = new Node();
         outro->value = value;
+        outro->prev = temp;
+        outro->next = current;
         temp->next = outro;
         current->prev = outro;
+
         ++nodeCount;
     }
 
@@ -182,39 +182,25 @@ public:
     {
         if (first != nullptr)
         {
-            if (nodeCount == 1)
-            {
-                Node *current = first;
-                Node *other = new Node();
-                other->value = value;
-                current->next = other;
-                other->prev = current;
-                last = other;
+            Node *current = first;
 
-                ++nodeCount;
-            }
-            else
-            {
-                Node *current = last;
-                Node *other = new Node();
-                other->value = value;
-                current->next = other;
-                other->prev = current;
-                last = other;
+            Node *other = new Node();
+            other->value = value;
+            current->prev = other;
+            other->next = current;
+            first = other;
 
-                ++nodeCount;
-            }
+            ++nodeCount;
         }
         else
         {
             first = new Node();
             first->value = value;
-            first->prev = last;
+            first->prev = nullptr;
+            last = first;
             ++nodeCount;
         }
     }
-
-    size_t getNodeCount() { return nodeCount; }
 
     void insertAtBack(T value)
     {

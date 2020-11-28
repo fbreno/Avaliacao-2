@@ -5,12 +5,12 @@
 int main(int argc, char const *argv[])
 {
     LinkedList<int> lista;
-    lista.insertAtBack(1);
-    lista.insertAtFront(3);
-    lista.insertAtBack(4);
-    lista.insertAtBack(84);
-    //lista.insertAt(2,1);
+    lista.insert(1);
+    lista.insert(3);
+    lista.insertAtFront(4);
+    lista.insert(8);
+    lista.insertAt(2,2);
     lista.print();
-    std::cout<<"Numero de nodes: "<<lista.getNodeCount()<<std::endl;
+    std::cout<<"Numero de nodes: "<<lista.size()<<std::endl;
 return 0;
 }
