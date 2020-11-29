@@ -30,22 +30,6 @@ public:
         return *this;
     }
 
-    void print()
-    {
-        if (size() == 0)
-        {
-            return;
-        }
-
-        Node *current = first;
-
-        do
-        {
-            std::cout << current->value << std::endl;
-            current = current->next;
-        } while (current != nullptr);
-    }
-
     void clear()
     {
         if (nodeCount == 0)
@@ -68,30 +52,39 @@ public:
 
     void pushBack(T value)
     {
-        if (first != nullptr)
+        if (first!=nullptr)
         {
-            Node *current = last;
-
-            Node *other = new Node();
+            Node* other = new Node();
             other->value = value;
-            current->next = other;
-            last = other;
-
+            last->next = other;
+            last=other;
             ++nodeCount;
-        }
-        else
+            
+        }else
         {
-            first = new Node();
-            first->value = value;
-            first->next = last;
+            first=new Node();
+            first->value=value;
+            last=first;
             ++nodeCount;
         }
+        
+        
     }
 
     void popFront()
     {
         first = first->next;
         nodeCount--;
+    }
+
+    T front()
+    {
+        return first->value;
+    }
+
+    T back()
+    {
+        return last->value;
     }
 
     size_t size() { return nodeCount; }

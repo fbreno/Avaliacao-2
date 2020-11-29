@@ -14,6 +14,26 @@ public:
         clear();
     }
 
+    void clear()
+    {
+        if (nodeCount == 0)
+        {
+            return;
+        }
+
+        Node *current = topo;
+
+        while (current != nullptr)
+        {
+            Node *temp = current->prev;
+            delete current;
+            current = temp;
+        }
+
+        nodeCount = 0;
+        topo = nullptr;
+    }
+
     void push(T value)
     {
         if (topo != nullptr)
@@ -45,11 +65,6 @@ public:
     {
         topo = topo->prev;
         nodeCount--;
-    }
-
-    void print()
-    {
-        
     }
 
     size_t size() { return nodeCount; }
