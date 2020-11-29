@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include "LinkedList.hpp"
+#include "stack.hpp"
+#include "queue.hpp"
 
 int main(int argc, char const *argv[])
 {
