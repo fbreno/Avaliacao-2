@@ -97,7 +97,7 @@ public:
         {
             current = current->next;
             ++index;
-            if (current == value)
+            if (current->value == value)
             {
                 return index;
             }
